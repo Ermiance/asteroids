@@ -45,7 +45,21 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE] and self.timer <= 0:
             self.shoot()
             self.timer = PLAYER_SHOOT_COOLDOWN
+
+        
+        if self.position[0] > SCREEN_WIDTH +10:
+            self.position[0] = 10
+        elif self.position[0] < -10:
+            self.position[0] = SCREEN_WIDTH -10
+        if self.position[1] > SCREEN_HEIGHT +10:
+            self.position[1] = 10
+        elif self.position[1] < -10:
+            self.position[1] = SCREEN_HEIGHT -10
         
     def shoot(self):
         shot = Shot(self.position[0], self.position[1])
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+    def respawn(self):
+        self.position = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        

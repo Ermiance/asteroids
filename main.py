@@ -13,7 +13,7 @@ def main():
     pygame.font.init()
     font = pygame.font.SysFont("arial", 30)
     score = 0
-    score_surface = font.render(f"Score: {score}", False, "white")
+    lives = 3
     
 
     updatable = pygame.sprite.Group()
@@ -34,13 +34,19 @@ def main():
                 return
         screen.fill("black")
         score_surface = font.render(f"Score: {score}", False, "white")
-        screen.blit(score_surface, (0, 0))
+        lives_surface = font.render("△" * lives, False, "white")
+        screen.blit(score_surface, (5, 5))
+        screen.blit(lives_surface, (5, 40))
         for sprite in updatable:
             sprite.update(dt)
         for asteroid in asteroids:
             if asteroid.collision(player):
-                print("Game over!")
-                return
+                if lives > 0:
+                    lives -= 1
+                    player.position = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+                else:    
+                    print("Game over!")
+                    return
         for asteroid in asteroids:
             for shot in shots:
                 if asteroid.collision(shot):
